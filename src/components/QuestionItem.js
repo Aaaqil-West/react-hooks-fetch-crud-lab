@@ -4,7 +4,7 @@ function QuestionItem({ question, onDelete, onUpdate }) {
   const { id, prompt, answers, correctIndex } = question;
 
   const options = answers.map((answer, index) => (
-    <option key={index} value={index}>
+    <option key={index} value={String(index)}>
       {answer}
     </option>
   ));
@@ -23,7 +23,7 @@ function QuestionItem({ question, onDelete, onUpdate }) {
       <h5>Prompt: {prompt}</h5>
       <label>
         Correct Answer:
-        <select value={correctIndex} onChange={handleSelectChange}>
+        <select value={String(correctIndex)} onChange={handleSelectChange}>
           {options}
         </select>
       </label>

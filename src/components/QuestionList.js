@@ -10,6 +10,8 @@ function QuestionList({ questions, setQuestions }) {
   }
 
   function handleUpdate(id, correctIndex) {
+    // Optimistically update state
+    setQuestions((prev) => prev.map((q) => q.id === id ? { ...q, correctIndex } : q));
     fetch(`http://localhost:4000/questions/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -17,7 +19,12 @@ function QuestionList({ questions, setQuestions }) {
     })
       .then((r) => r.json())
       .then((updated) => {
-        setQuestions((prev) => prev.map((q) => (q.id === id ? updated : q)));
+        setQuestions((prev) => prev.map((q) => {
+          if (q.id === id) {
+            return { ...q, ...updated, correctIndex: updated.correctIndex ?? correctIndex };
+          }
+          return q;
+        }));
       });
   }
 

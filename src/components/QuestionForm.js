@@ -19,6 +19,7 @@ function QuestionForm(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
+    let isMounted = true;
     // Prepare data for API
     const newQuestion = {
       prompt: formData.prompt,
@@ -38,15 +39,18 @@ function QuestionForm(props) {
           props.setQuestions((prev) => [...prev, data]);
         }
         // Optionally reset form
-        setFormData({
-          prompt: "",
-          answer1: "",
-          answer2: "",
-          answer3: "",
-          answer4: "",
-          correctIndex: 0,
-        });
+        if (isMounted) {
+          setFormData({
+            prompt: "",
+            answer1: "",
+            answer2: "",
+            answer3: "",
+            answer4: "",
+            correctIndex: 0,
+          });
+        }
       });
+    return () => { isMounted = false; };
   }
 
   return (
